@@ -24,7 +24,7 @@ for i in range(len(pcs)):
 
 
 # create an instance of fanova with trained forest and ConfigSpace
-f = fanova.fANOVA(X = features, Y = responses, cs=cs)
+f = fanova.fANOVA(X = features, Y = responses, config_space=cs)
 
 # marginal of particular parameter:
 dims = list([1])
