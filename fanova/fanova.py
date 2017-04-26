@@ -68,8 +68,12 @@ class fANOVA(object):
             raise RuntimeError('Number of parameters in ConfigSpace object does not match input X')
         for i in range(len(self.cs_params)):
             if not isinstance(self.cs_params[i], (CategoricalHyperparameter)):
-                if (np.max(X[:, i]) > self.cs_params[i].upper) or (np.min(X[:, i]) > self.cs_params[i].lower):
-                    raise RuntimeError('Some sample values from X are not in the given interval')
+                if config_on_hypercube:
+                    if (np.max(X[:, i]) > self.cs_params[i].upper) or (np.min(X[:, i]) < self.cs_params[i].lower):
+                        raise RuntimeError('Some sample values from X are not in the given interval')
+                else:
+                    if (np.max(X[:, i]) > 1.) or (np.min(X[:, i]) < 0.):
+                        raise RuntimeError('Some sample values from X are not sampled on the hypercube')
             else:
                 unique_vals = set(X[:, i])
                 if len(unique_vals) > self.cs_params[i]._num_choices:
